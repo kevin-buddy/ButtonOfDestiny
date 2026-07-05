@@ -1,5 +1,6 @@
 import type { TelegramPayload } from "@/types/date-form";
 import TelegramBot from 'node-telegram-bot-api';
+import { supabase } from './supabase';
 
 /**
  * Formats the date response into a readable Telegram message.
@@ -42,8 +43,17 @@ function buildTelegramMessage(payload: TelegramPayload): string {
 export async function sendDateResponseViaTelegram(
   payload: TelegramPayload
 ): Promise<void> {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const { data, error } = await supabase
+    .from('personal_project_buttonofdestiny')
+    .select('TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID')
+    .eq('uuid', payload.uuid)
+    .single();
+
+  if (error || !data?.TELEGRAM_BOT_TOKEN || !data?.TELEGRAM_CHAT_ID) {
+    throw new Error("Could not find Telegram credentials for this invitation.");
+  }
+  const botToken = data.TELEGRAM_BOT_TOKEN;
+  const chatId = data.TELEGRAM_CHAT_ID;
   const bot = new TelegramBot(botToken || '', { polling: false });
 
   if (!botToken || !chatId) {

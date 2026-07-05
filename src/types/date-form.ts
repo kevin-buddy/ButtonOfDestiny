@@ -1,21 +1,34 @@
 export type DateFormStep = "hero" | "invitation" | "planning" | "success";
+// The shape of your Supabase table data
+export interface InvitationConfig {
+  uuid: string;
+  senderName: string;
+  receiverName: string;
+  heroPhotoUrl: string;
+  heroPhotoAlt: string;
+  headline: string;
+  personalMessage: string;
+  invitationQuestion: string;
+  yesButtonLabel: string;
+  noButtonLabel: string;
+  noPanicMessages: string[];
+  locationSuggestions: string[];
+  activitySuggestions: string[];
+  successHeadline: string;
+  successMessage: string;
+}
 
 export interface DatePlanFormData {
-  /** Where the receiver wants to go */
   preferredLocation: string;
-  /** Any custom location they typed in */
   customLocation: string;
-  /** Preferred date string (ISO or display string) */
   preferredDate: string;
-  /** Preferred time of day */
   preferredTime: string;
-  /** Activities they'd enjoy */
   selectedActivities: string[];
-  /** Any extra notes or wishes */
   extraNotes: string;
 }
 
 export interface TelegramPayload {
+  uuid: string;
   receiverName: string;
   formData: DatePlanFormData;
   submittedAt: string;

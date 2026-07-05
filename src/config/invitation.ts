@@ -1,8 +1,3 @@
-/**
- * ✏️  EDIT THIS FILE to personalise your date invitation.
- * Everything here is designed to be changed — make it yours!
- */
-
 export const invitationConfig = {
   /** Your name (the person sending the invitation) */
   senderName: "Alex",

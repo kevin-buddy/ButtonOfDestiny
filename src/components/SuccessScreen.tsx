@@ -34,7 +34,7 @@ export function SuccessScreen() {
         🎉
       </div>
 
-      <p className="section-label mb-4">it's a date! 💕</p>
+      <p className="section-label mb-4">it&apos;s a date! 💕</p>
 
       <h2 className="font-display text-4xl md:text-5xl font-bold text-rose-500 mb-4 max-w-md leading-tight">
         {successHeadline}
@@ -61,7 +61,7 @@ export function SuccessScreen() {
       </div>
 
       <p className="mt-8 text-rose-300 text-sm">
-        Your answer has been sent — I'll be in touch soon! 🤍
+        Your answer has been sent — I&apos;ll be in touch soon! 🤍
       </p>
     </section>
   );

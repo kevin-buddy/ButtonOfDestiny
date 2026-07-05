@@ -1,11 +1,10 @@
 "use client";
-
 import { useState, useCallback, FormEvent } from "react";
 import { MapPin, Calendar, Clock, Sparkles, Send, ChevronRight } from "lucide-react";
-import { invitationConfig } from "@/config/invitation";
-import type { DatePlanFormData } from "@/types/date-form";
+import type { DatePlanFormData, InvitationConfig } from "@/types/date-form";
 
 interface DatePlanningFormProps {
+  config: InvitationConfig;
   onSubmitSuccess: () => void;
 }
 
@@ -18,12 +17,12 @@ const initialFormData: DatePlanFormData = {
   extraNotes:          "",
 };
 
-export function DatePlanningForm({ onSubmitSuccess }: DatePlanningFormProps) {
+export function DatePlanningForm({ config, onSubmitSuccess }: DatePlanningFormProps) {
   const [formData, setFormData]   = useState<DatePlanFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError]   = useState<string | null>(null);
 
-  const { receiverName, locationSuggestions, activitySuggestions } = invitationConfig;
+  const { receiverName, locationSuggestions, activitySuggestions } = config;
 
   const handleLocationSelect = useCallback((location: string) => {
     setFormData((prev) => ({ ...prev, preferredLocation: location }));
@@ -55,7 +54,7 @@ export function DatePlanningForm({ onSubmitSuccess }: DatePlanningFormProps) {
         const response = await fetch("/api/send-date-response", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ receiverName, formData }),
+          body: JSON.stringify({ uuid: config.uuid, receiverName, formData }),
         });
 
         const result = await response.json();
@@ -89,9 +88,9 @@ export function DatePlanningForm({ onSubmitSuccess }: DatePlanningFormProps) {
           <span className="text-5xl mb-4 block animate-bounce-soft" aria-hidden="true">
             🗓️
           </span>
-          <p className="section-label mb-2">let's make it official</p>
+          <p className="section-label mb-2">let&apos;s make it official</p>
           <h2 className="font-display text-4xl font-bold text-rose-500">
-            Let's plan our date! 🌷
+            Let&apos;s plan our date! 🌷
           </h2>
           <p className="text-rose-400 mt-2">
             Tell me everything — I want it to be perfect for you.

@@ -7,7 +7,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const body = await request.json();
 
     // Validate required fields
-    if (!body.receiverName || !body.formData) {
+    if (!body.receiverName || !body.formData || !body.uuid) {
       return NextResponse.json(
         { success: false, error: "Missing required fields." },
         { status: 400 }
@@ -21,6 +21,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         dateStyle: "long",
         timeStyle: "short",
       }),
+      uuid: String(body.uuid),
     };
 
     await sendDateResponseViaTelegram(payload);

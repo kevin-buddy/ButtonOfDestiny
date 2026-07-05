@@ -6,14 +6,15 @@ import { DateInvitation }    from "@/components/DateInvitation";
 import { DatePlanningForm }  from "@/components/DatePlanningForm";
 import { SuccessScreen }     from "@/components/SuccessScreen";
 import type { DateFormStep, InvitationConfig } from "@/types/date-form";
+import { useParams } from "next/navigation";
 import { supabase } from '@/lib/supabase';
 
 export default function HomePage() {
   const [currentStep, setCurrentStep] = useState<DateFormStep>("hero");
   const [config, setConfig] = useState<InvitationConfig | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  const uuid = process.env.NEXT_PUBLIC_DEFAULT_UUID as string;
+  const params = useParams();
+  const uuid = params.uuid as string;
   useEffect(() => {
     async function fetchInvitationData() {
       if (!uuid) return;
@@ -22,7 +23,8 @@ export default function HomePage() {
         .from('personal_project_buttonofdestiny')
         .select('*')
         .eq('uuid', uuid)
-        .single();
+        .single(); // Use .single() since we only want one row
+
       if (error) {
         console.error("Error fetching data:", error);
       } else if (data) {

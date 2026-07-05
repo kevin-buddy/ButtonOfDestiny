@@ -2,15 +2,15 @@
 
 import Image from "next/image";
 import { Heart } from "lucide-react";
-import { invitationConfig } from "@/config/invitation";
+import { InvitationConfig } from "@/types/date-form";
 
 interface HeroSectionProps {
+  config: InvitationConfig;
   onContinue: () => void;
 }
 
-export function HeroSection({ onContinue }: HeroSectionProps) {
-  const { heroPhotoUrl, heroPhotoAlt, headline, personalMessage, receiverName, senderName } =
-    invitationConfig;
+export function HeroSection({ config, onContinue }: HeroSectionProps) {
+  const { heroPhotoUrl, heroPhotoAlt, headline, personalMessage, receiverName, senderName } = config;
 
   const formattedMessage = personalMessage.split("\n");
 

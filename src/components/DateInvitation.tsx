@@ -1,20 +1,20 @@
 "use client";
-
 import { useState, useCallback, useRef } from "react";
 import { Heart, Sparkles } from "lucide-react";
-import { invitationConfig } from "@/config/invitation";
+import { InvitationConfig } from "@/types/date-form";
 
 interface DateInvitationProps {
+  config: InvitationConfig;
   onYes: () => void;
 }
 
-export function DateInvitation({ onYes }: DateInvitationProps) {
+export function DateInvitation({ config, onYes }: DateInvitationProps) {
   const [noMessageIndex, setNoMessageIndex] = useState(0);
   const [noButtonPosition, setNoButtonPosition] = useState<{ x: number; y: number } | null>(null);
   const [hasClickedYes, setHasClickedYes] = useState(false);
   const noButtonRef = useRef<HTMLButtonElement>(null);
 
-  const { invitationQuestion, yesButtonLabel, noButtonLabel, noPanicMessages } = invitationConfig;
+  const { invitationQuestion, yesButtonLabel, noButtonLabel, noPanicMessages } = config;
 
   /** Moves the "No" button to a random position when hovered/focused. */
   const handleNoButtonEscape = useCallback(() => {
@@ -64,7 +64,7 @@ export function DateInvitation({ onYes }: DateInvitationProps) {
       </h2>
 
       <p className="text-rose-400 mb-12 text-base">
-        (Tap Yes — I promise it'll be worth it 🥺)
+        (Tap Yes — I promise it&apos;ll be worth it 🥺)
       </p>
 
       {/* Yes button */}
@@ -79,7 +79,7 @@ export function DateInvitation({ onYes }: DateInvitationProps) {
         {hasClickedYes ? (
           <>
             <Sparkles className="w-5 h-5" />
-            Yay! Let's plan it! 🎉
+            Yay! Let&apos;s plan it! 🎉
           </>
         ) : (
           <>
