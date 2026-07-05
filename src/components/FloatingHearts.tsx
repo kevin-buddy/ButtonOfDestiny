@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /** Decorative animated hearts floating in the background. */
 export function FloatingHearts() {

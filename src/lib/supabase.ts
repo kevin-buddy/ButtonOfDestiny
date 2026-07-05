@@ -13,7 +13,7 @@ export const supabase = createClient(
   supabaseAnonKey || 'placeholder-key',
   {
     db: {
-      schema: 'personal_project' as any // Targets your specific schema safely
+      schema: 'personal_project' as string
     }
   }
 );

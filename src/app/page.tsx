@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState, useCallback, useEffect } from "react";
 import { FloatingHearts }    from "@/components/FloatingHearts";
 import { HeroSection }       from "@/components/HeroSection";
@@ -64,7 +64,7 @@ export default function HomePage() {
       {currentStep === "hero" && <HeroSection config={config} onContinue={advanceToInvitation} />}
       {currentStep === "invitation" && <DateInvitation config={config} onYes={advanceToPlanning} />}
       {currentStep === "planning" && <DatePlanningForm config={config} onSubmitSuccess={advanceToSuccess} />}
-      {currentStep === "success" && <SuccessScreen />}
+      {currentStep === "success" && <SuccessScreen config={config} />}
     </main>
   );
 }

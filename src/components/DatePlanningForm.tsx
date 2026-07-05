@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState, useCallback, FormEvent } from "react";
 import { MapPin, Calendar, Clock, Sparkles, Send, ChevronRight } from "lucide-react";
 import type { DatePlanFormData, InvitationConfig } from "@/types/date-form";
@@ -71,7 +71,7 @@ export function DatePlanningForm({ config, onSubmitSuccess }: DatePlanningFormPr
         setIsSubmitting(false);
       }
     },
-    [formData, receiverName, onSubmitSuccess]
+    [formData, receiverName, onSubmitSuccess, config.uuid]
   );
 
   const isFormValid =

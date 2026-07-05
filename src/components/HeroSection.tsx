@@ -71,7 +71,7 @@ export function HeroSection({ config, onContinue }: HeroSectionProps) {
       {/* CTA */}
       <button
         onClick={onContinue}
-        className="btn-primary animate-fade-in-up animate-bounce-soft"
+        className="btn-primary animate-bounce-soft"
         style={{ animationDelay: "500ms" }}
         aria-label={`Open invitation for ${receiverName}`}
       >
@@ -85,7 +85,7 @@ export function HeroSection({ config, onContinue }: HeroSectionProps) {
 /** Shown when no heroPhotoUrl is configured. */
 function IllustratedHeartPlaceholder() {
   return (
-    <div className="w-52 h-52 rounded-full bg-gradient-to-br from-rose-200 via-blush-300 to-rose-400 flex items-center justify-center shadow-glow-rose border-4 border-white">
+    <div className="w-52 h-52 rounded-full bg-linear-to-br from-rose-200 via-blush-300 to-rose-400 flex items-center justify-center shadow-glow-rose border-4 border-white">
       <span className="text-7xl select-none" aria-hidden="true">
         💖
       </span>

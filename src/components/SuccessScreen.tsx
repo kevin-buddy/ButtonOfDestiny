@@ -1,11 +1,14 @@
-"use client";
-
+'use client';
 import { useEffect } from "react";
 import confetti from "canvas-confetti";
-import { invitationConfig } from "@/config/invitation";
+import { InvitationConfig } from "@/types/date-form";
 
-export function SuccessScreen() {
-  const { successHeadline, successMessage, senderName } = invitationConfig;
+interface SuccessScreenProps {
+  config: InvitationConfig;
+}
+
+export function SuccessScreen({ config }: SuccessScreenProps) {
+  const { successHeadline, successMessage, senderName } = config;
 
   useEffect(() => {
     const launchConfetti = () => {
