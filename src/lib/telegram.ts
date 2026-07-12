@@ -1,6 +1,5 @@
 import type { TelegramPayload } from "@/types/date-form";
 import TelegramBot from 'node-telegram-bot-api';
-import { supabase } from './supabase';
 
 /**
  * Formats the date response into a readable Telegram message.
@@ -43,17 +42,26 @@ function buildTelegramMessage(payload: TelegramPayload): string {
 export async function sendDateResponseViaTelegram(
   payload: TelegramPayload
 ): Promise<void> {
-  const { data, error } = await supabase
-    .from('personal_project_buttonofdestiny')
-    .select('TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID')
-    .eq('uuid', payload.uuid)
-    .single();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
+  const token = process.env.NEXT_PUBLIC_AUTH_TOKEN as string;
+  let config = null;
 
-  if (error || !data?.TELEGRAM_BOT_TOKEN || !data?.TELEGRAM_CHAT_ID) {
+  if (token) {
+    const response = await fetch(`${apiUrl}/buttonofdestiny${payload.uuid ? `/${payload.uuid}` : ''}`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (response.status === 200) {
+      const result = await response.json();
+      if (result.data) {
+        config = result.data;
+      }
+    }
+  }
+  if (!config.TELEGRAM_BOT_TOKEN || !config.TELEGRAM_CHAT_ID) {
     throw new Error("Could not find Telegram credentials for this invitation.");
   }
-  const botToken = data.TELEGRAM_BOT_TOKEN;
-  const chatId = data.TELEGRAM_CHAT_ID;
+  const botToken = config.TELEGRAM_BOT_TOKEN;
+  const chatId = config.TELEGRAM_CHAT_ID;
   const bot = new TelegramBot(botToken || '', { polling: false });
 
   if (!botToken || !chatId) {

@@ -1,50 +1,30 @@
-'use client';
-import { useState, useCallback, useEffect } from "react";
 import { FloatingHearts }    from "@/components/FloatingHearts";
-import { HeroSection }       from "@/components/HeroSection";
-import { DateInvitation }    from "@/components/DateInvitation";
-import { DatePlanningForm }  from "@/components/DatePlanningForm";
-import { SuccessScreen }     from "@/components/SuccessScreen";
-import type { DateFormStep, InvitationConfig } from "@/types/date-form";
-import { useParams } from "next/navigation";
-import { supabase } from '@/lib/supabase';
+import { InteractiveDateFlow } from "@/components/InteractiveDateFlow";
 
-export default function HomePage() {
-  const [currentStep, setCurrentStep] = useState<DateFormStep>("hero");
-  const [config, setConfig] = useState<InvitationConfig | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const params = useParams();
-  const uuid = params.uuid as string;
-  useEffect(() => {
-    async function fetchInvitationData() {
-      if (!uuid) return;
+export default async function HomePage({ params }: { params: Promise<{ uuid: string }> }) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
+  const token = process.env.NEXT_PUBLIC_AUTH_TOKEN as string;
+  let config = null;
+  const uuid = (await params).uuid as string;
 
-      const { data, error } = await supabase
-        .from('personal_project_buttonofdestiny')
-        .select('*')
-        .eq('uuid', uuid)
-        .single(); // Use .single() since we only want one row
-
-      if (error) {
-        console.error("Error fetching data:", error);
-      } else if (data) {
-        setConfig(data);
+  if (token) {
+    const response = await fetch(`${apiUrl}/buttonofdestiny${uuid ? `/${uuid}` : ''}`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (response.status === 200) {
+      const result = await response.json();
+      if (result.data) {
+        config = result.data;
       }
-      setIsLoading(false);
     }
-
-    fetchInvitationData();
-  }, [uuid]);
-
-  const advanceToInvitation  = useCallback(() => setCurrentStep("invitation"), []);
-  const advanceToPlanning    = useCallback(() => setCurrentStep("planning"),   []);
-  const advanceToSuccess     = useCallback(() => setCurrentStep("success"),    []);
-
-  if (isLoading) {
-    return <div className="min-h-dvh flex items-center justify-center text-rose-500">Loading...</div>;
   }
+
   if (!config) {
-    return <div className="min-h-dvh flex items-center justify-center text-rose-500">Invitation not found!</div>;
+    return (
+      <div className="min-h-dvh flex items-center justify-center text-rose-500">
+        Invitation not found!
+      </div>
+    );
   }
 
   return (
@@ -59,14 +39,11 @@ export default function HomePage() {
         }}
       />
 
-      {/* Floating decorative hearts */}
+      {/* Decorative components that don't need state can stay here */}
       <FloatingHearts />
 
-      {/* Step renderer */}
-      {currentStep === "hero" && <HeroSection config={config} onContinue={advanceToInvitation} />}
-      {currentStep === "invitation" && <DateInvitation config={config} onYes={advanceToPlanning} />}
-      {currentStep === "planning" && <DatePlanningForm config={config} onSubmitSuccess={advanceToSuccess} />}
-      {currentStep === "success" && <SuccessScreen config={config} />}
+      {/* Pass the server-fetched config into the Client Component */}
+      <InteractiveDateFlow config={config} />
     </main>
   );
 }
