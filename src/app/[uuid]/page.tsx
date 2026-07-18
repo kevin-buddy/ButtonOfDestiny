@@ -2,8 +2,8 @@ import { FloatingHearts }    from "@/components/FloatingHearts";
 import { InteractiveDateFlow } from "@/components/InteractiveDateFlow";
 
 export default async function HomePage({ params }: { params: Promise<{ uuid: string }> }) {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL as string;
-  const token = process.env.NEXT_PUBLIC_AUTH_TOKEN as string;
+  const apiUrl = process.env.API_URL as string;
+  const token = process.env.AUTH_TOKEN as string;
   let config = null;
   const uuid = (await params).uuid as string;
 
